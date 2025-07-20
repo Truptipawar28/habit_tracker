@@ -1,11 +1,20 @@
 <h1 class="text-xl font-semibold"><%= action_name.capitalize %> Habit</h1>
 
-<%= form_with model: @habit do |f| %>
-  <div class="mt-4">
-    <%= f.label :name, class: "block" %>
-    <%= f.text_field :name, class: "border p-2 w-full" %>
+<%= form_with(model: @habit, local: true) do |form| %>
+  <div class="mb-4">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "input border p-2 w-full" %>
   </div>
-  <div class="mt-4">
-    <%= f.submit class: "bg-green-500 text-white px-4 py-2 rounded" %>
+
+  <div class="mb-4">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "input border p-2 w-full" %>
   </div>
+
+  <div class="mb-4">
+    <%= form.label :frequency %>
+    <%= form.text_field :frequency, class: "input border p-2 w-full" %>
+  </div>
+
+<%= form.submit (@habit.new_record? ? "Create Habit" : "Update Habit"), class: "btn btn-primary bg-green-500 text-white px-4 py-2 rounded" %>
 <% end %>
