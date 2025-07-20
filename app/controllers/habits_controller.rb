@@ -3,7 +3,7 @@ class HabitsController < ApplicationController
   before_action :set_habit, only: [:edit, :update, :destroy]
 
   def index
-    @habits = current_user.habits
+    @habits = current_user.habits.includes(:habit_checkins)
   end
 
   def new
@@ -19,9 +19,7 @@ class HabitsController < ApplicationController
     end
   end
 
-  def edit
-    # @habit is already set by before_action
-  end
+  def edit; end
 
   def update
     if @habit.update(habit_params)
@@ -36,16 +34,32 @@ class HabitsController < ApplicationController
     redirect_to habits_path, notice: "Habit deleted!"
   end
 
+  # 🔹 HabitCheckinsController logic moved here:
+
+  def checkin_create
+    habit = current_user.habits.find(params[:habit_id])
+    habit.habit_checkins.create(checkin_date: Date.today)
+    redirect_to habits_path, notice: "Checked in!"
+  end
+
+  def checkin_destroy
+    checkin = HabitCheckin.find(params[:id])
+    if checkin.habit.user == current_user
+      checkin.destroy
+      redirect_to habits_path, notice: "Check-in removed!"
+    else
+      redirect_to habits_path, alert: "Unauthorized action."
+    end
+  end
+
   private
 
   def set_habit
-    # Safely finds the habit for current_user or raises 404 if not found
     @habit = current_user.habits.find_by(id: params[:id])
     redirect_to habits_path, alert: "Habit not found." if @habit.nil?
   end
 
   def habit_params
-    # Permit only allowed parameters
     params.require(:habit).permit(:name, :description, :frequency)
   end
 end

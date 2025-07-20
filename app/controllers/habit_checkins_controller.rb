@@ -1,0 +1,2 @@
+class HabitCheckinsController < ApplicationController
+end

@@ -5,11 +5,24 @@
 <ul class="mt-6 space-y-2">
   <% @habits.each do |habit| %>
     <li class="bg-gray-100 p-3 rounded flex justify-between items-center">
-      <%= habit.name %>
-      <span>
-        <%= link_to "Edit", edit_habit_path(habit), class: "text-blue-500 mr-2" %>
+      <div>
+        <strong><%= habit.title %></strong>
+        <% if habit.habit_checkins.exists?(checkin_date: Date.today) %>
+          <span class="ml-2 text-green-600">✅ Checked in today</span>
+        <% else %>
+          <span class="ml-2 text-red-500">⛔ Not yet</span>
+        <% end %>
+      </div>
+      <div class="flex gap-3">
+        <% if habit.habit_checkins.exists?(checkin_date: Date.today) %>
+          <%= button_to "Undo Check-in", habit_checkin_path(habit.habit_checkins.find_by(checkin_date: Date.today)), method: :delete, class: "text-yellow-600 underline" %>
+        <% else %>
+          <%= button_to "Check-in", habit_habit_checkins_path(habit), method: :post, class: "text-green-600 underline" %>
+        <% end %>
+
+        <%= link_to "Edit", edit_habit_path(habit), class: "text-blue-500" %>
         <%= link_to "Delete", habit_path(habit), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-500" %>
-      </span>
+      </div>
     </li>
   <% end %>
 </ul>
