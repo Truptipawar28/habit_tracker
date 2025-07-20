@@ -2,8 +2,12 @@ Rails.application.routes.draw do
   # Devise routes for user authentication
   devise_for :users
 
+  # RESTful routes for habits
+  resources :habits
+
   # Root path goes to welcome#index
-  root "welcome#index"
+  root "habits#index"
+
 
   # Health check route (optional, for uptime monitoring)
   get "up" => "rails/health#show", as: :rails_health_check
