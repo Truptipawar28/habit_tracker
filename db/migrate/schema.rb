@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_20_132206) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_20_074106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "habit_checkins", force: :cascade do |t|
     t.bigint "habit_id", null: false
-    t.date "checked_date"
+    t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["habit_id"], name: "index_habit_checkins_on_habit_id"
   end
 
   create_table "habits", force: :cascade do |t|
-    t.string "title"
+    t.string "name"
     t.text "description"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
