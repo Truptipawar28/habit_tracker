@@ -1,0 +1,5 @@
+<div class="mt-2 text-sm">
+  🧍 Current: <%= habit.current_streak %> |
+  🏅 Longest: <%= habit.longest_streak %> |
+  📊 Consistency: <%= number_to_percentage(habit.consistency, precision: 1) %>
+</div>

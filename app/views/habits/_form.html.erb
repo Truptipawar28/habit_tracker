@@ -1,21 +1,33 @@
-<%= form_with(model: @habit, class: "max-w-lg mx-auto mt-8", local: true) do |form| %>
-  <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+<div class="max-w-lg mx-auto mt-10">
+  <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">
+    <%= @habit.persisted? ? "✏️ Edit Habit" : "➕ Create New Habit" %>
+  </h1>
+
+  <%= form_with(model: @habit, class: "bg-white shadow-lg rounded-lg px-8 pt-6 pb-8") data: { turbo_stream: true } do |form| %>
+
     <!-- Title -->
-    <div class="mb-6">
+    <div class="mb-5">
       <%= form.label :title, class: "block text-gray-700 text-sm font-bold mb-2" %>
-      <%= form.text_field :title, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      <%= form.text_field :title, class: "shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
     <!-- Description -->
-    <div class="mb-6">
+    <div class="mb-5">
       <%= form.label :description, class: "block text-gray-700 text-sm font-bold mb-2" %>
-      <%= form.text_area :description, rows: 4, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      <%= form.text_area :description, rows: 3, class: "shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
 
-    <!-- Submit and Cancel Buttons -->
-    <div class="flex items-center justify-between gap-4">
-      <%= form.submit "Save Changes", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-1" %>
-      <%= link_to "Cancel", habits_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-1 text-center" %>
+    <!-- Start Date -->
+    <div class="mb-6">
+      <%= form.label :start_date, "Start Date", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.date_field :start_date, class: "shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" %>
     </div>
-  </div>
-<% end %>
+
+    <!-- Buttons -->
+    <div class="flex items-center justify-between gap-4">
+      <%= form.submit @habit.persisted? ? "Update Habit" : "Create Habit", class: "w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded transition duration-200" %>
+      <%= link_to "Cancel", habits_path, class: "w-full text-center bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded transition duration-200" %>
+    </div>
+
+  <% end %>
+</div>

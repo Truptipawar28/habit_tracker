@@ -2,49 +2,79 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Habit Tracker" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
-
-    <%# Enable PWA manifest if needed %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <!-- ✅ Tailwind CSS (Compiled Locally) -->
+    <!-- Include your Tailwind CSS build -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
-    <!-- ✅ Stimulus + Turbo -->
+    <!-- Turbo + Stimulus -->
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CDN for dev convenience (remove in production) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
-    </head>
+  <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
-  <body class="bg-gray-50 text-gray-800 min-h-screen">
-    <!-- ✅ Top Navigation -->
-    <nav class="flex justify-end p-4 bg-white shadow">
-      <% if user_signed_in? %>
-        <div class="flex items-center space-x-4">
-          <span>Welcome, <%= current_user.email %></span>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "text-red-600 hover:text-red-800" %>
+    <!-- Top Navigation -->
+    <header class="bg-white shadow-sm p-4 sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <h1 class="text-lg font-bold text-blue-600">
+          <%= link_to "Habit Tracker", root_path %>
+        </h1>
+
+        <% if user_signed_in? %>
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-700">👤 <%= current_user.email %></span>
+            <%= button_to "Logout",
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: "text-red-600 hover:text-red-800 text-sm" %>
+          </div>
+        <% else %>
+          <div class="space-x-4">
+            <%= link_to "Login",
+                  new_user_session_path,
+                  class: "text-blue-600 font-medium hover:underline" %>
+            <%= link_to "Sign up",
+                  new_user_registration_path,
+                  class: "text-green-600 font-medium hover:underline" %>
+          </div>
+        <% end %>
+      </div>
+    </header>
+
+    <!-- Flash Messages (auto‑dismiss after 3s) -->
+    <div id="flash-container" class="max-w-4xl mx-auto mt-4 px-4">
+      <% flash.each do |type, message| %>
+        <div class="flash mb-4 px-4 py-2 rounded transition-opacity duration-500
+                      <%= type == 'notice' ? 'bg-green-100 border border-green-300 text-green-700' : 'bg-red-100 border border-red-300 text-red-700' %>">
+          <%= message %>
         </div>
-      <% else %>
-        <%= link_to "Login", new_user_session_path, class: "text-blue-600 font-bold mr-4" %>
-        <%= link_to "Sign up", new_user_registration_path, class: "text-green-600 font-bold" %>
       <% end %>
-    </nav>
+    </div>
 
-    <!-- ✅ Main Content -->
-    <main class="max-w-4xl mx-auto p-6">
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl mx-auto w-full px-6 py-6">
       <%= yield %>
     </main>
+
+    <!-- Auto‑dismiss Flash Script -->
+    <script>
+      document.addEventListener("turbo:load", () => {
+        const flashes = document.querySelectorAll("#flash-container .flash");
+        flashes.forEach(flash => {
+          setTimeout(() => {
+            flash.classList.add("opacity-0");
+            setTimeout(() => flash.remove(), 500);
+          }, 3000);
+        });
+      });
+    </script>
   </body>
 </html>
