@@ -1,0 +1,9 @@
+:concurrency: 5
+
+:schedule:
+  habit_cleanup_job:
+    cron: "* * * * *"         # Runs every minute
+    class: "HabitCleanupJob"
+
+:queues:
+  - default

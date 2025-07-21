@@ -1,0 +1,16 @@
+<h1 style="font-family: sans-serif; color: #333;">
+  Hello <%= @user.email %> 👋
+</h1>
+
+<p style="font-family: sans-serif; color: #555;">
+  Here's your habit progress this week:
+</p>
+
+<ul style="padding-left: 20px;">
+  <% @habits.each do |habit| %>
+    <li style="margin-bottom: 8px; font-family: sans-serif;">
+      <strong style="color: #000;"><%= habit.title %></strong>: 
+      <%= habit.habit_checkins.where("checkin_date >= ?", 1.week.ago).count %> check-ins this week
+    </li>
+  <% end %>
+</ul>

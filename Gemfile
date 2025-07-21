@@ -30,6 +30,10 @@ gem "solid_queue"
 gem "solid_cable"
 
 gem 'devise'
+gem 'whenever', require: false
+gem 'sidekiq-scheduler'
+gem 'sidekiq'
+
 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -51,6 +55,9 @@ gem 'tailwindcss-rails'
 # Gemfile
 gem "chartkick"
 gem "groupdate"
+gem 'sidekiq'
+gem 'redis'
+gem 'sidekiq-cron', '~> 1.4'
 
 
 group :development, :test do
@@ -72,4 +79,5 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem 'letter_opener'
 end
