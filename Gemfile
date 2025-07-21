@@ -31,6 +31,7 @@ gem "solid_cable"
 
 gem 'devise'
 
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
@@ -46,6 +47,11 @@ gem "thruster", require: false
 gem 'devise'
 
 gem 'tailwindcss-rails'
+
+# Gemfile
+gem "chartkick"
+gem "groupdate"
+
 
 group :development, :test do
   # Load environment variables from .env file

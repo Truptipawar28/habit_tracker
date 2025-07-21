@@ -6,9 +6,12 @@ class HabitsController < ApplicationController
     @habits = current_user.habits.includes(:habit_checkins)
   end
 
-  def show
-    # Optionally render a habit detail page
-  end
+def show
+  @habit = current_user.habits.find(params[:id])
+  checkins = @habit.habit_checkins.group(:checkin_date).count
+  @chart_data = checkins.sort.to_h
+end
+
 
   def new
     @habit = current_user.habits.build
@@ -59,6 +62,8 @@ class HabitsController < ApplicationController
       redirect_to habits_path, alert: "Unauthorized action or check-in not found."
     end
   end
+
+
 
   private
 

@@ -26,7 +26,7 @@ class Habit < ApplicationRecord
 
   # Longest streak ever
   def longest_streak
-    dates = habit_checkins.order(:checkin_date).pluck(:checkin_date)
+    dates = habit_checkins.order(:checkin_date).pluck(:checkin_date).uniq
     return 0 if dates.empty?
 
     max, curr = 1, 1
@@ -41,14 +41,26 @@ class Habit < ApplicationRecord
     max
   end
 
-  # Consistency %
-  def completion_rate
-    total_days     = (Date.current - created_at.to_date).to_i + 1
-    completed_days = habit_checkins.count
-    ((completed_days.to_f / total_days) * 100).round(2)
+  # app/models/habit.rb
+def checkins_by_day
+  habit_checkins.group_by_day(:checkin_date, last: 30).count
+end
+
+  # Consistency as percentage of days completed since habit creation
+def completion_rate
+  total_days     = (Date.current - created_at.to_date).to_i + 1
+  completed_days = habit_checkins.distinct.count(:checkin_date)
+  percentage     = (completed_days.to_f / total_days) * 100
+  [percentage, 100].min.round(2)
+end
+
+
+  # Alias for consistency (used in views)
+  def consistency
+    completion_rate
   end
 
-  def completed_today?
+  def checked_in_today?
     habit_checkins.exists?(checkin_date: Date.current)
   end
 end

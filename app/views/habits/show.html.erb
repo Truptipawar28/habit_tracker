@@ -1,5 +1,21 @@
-<h1><%= @habit.title %></h1>
-<p><%= @habit.description %></p>
-<p>Frequency: <%= @habit.frequency %></p>
-<%= link_to "Edit", edit_habit_path(@habit) %> |
-<%= link_to "Back to list", habits_path %>
+<h1 class="text-2xl font-bold mb-4"><%= @habit.title %></h1>
+
+<p class="mb-2"><strong>Description:</strong> <%= @habit.description %></p>
+
+<div class="mb-4">
+  🧍 Current Streak: <%= @habit.current_streak %> days<br>
+  🏅 Longest Streak: <%= @habit.longest_streak %> days<br>
+  📊 Consistency: <%= number_to_percentage(@habit.completion_rate, precision: 1) %>
+</div>
+
+<div class="my-6">
+  <%= line_chart @chart_data, height: "250px", colors: ['#34d399'], library: {
+    title: { text: "Progress Over Time", style: { fontSize: "20px" } },
+    yAxis: { title: { text: "Check-ins" }, min: 0 }
+  } %>
+</div>
+
+<div class="mt-6 space-x-4">
+  <%= link_to "✏️ Edit Habit", edit_habit_path(@habit), class: "text-blue-500 underline" %>
+  <%= link_to "⬅️ Back to list", habits_path, class: "text-blue-500 underline" %>
+</div>
