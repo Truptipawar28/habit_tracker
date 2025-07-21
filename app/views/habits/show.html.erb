@@ -1,0 +1,5 @@
+<h1><%= @habit.title %></h1>
+<p><%= @habit.description %></p>
+<p>Frequency: <%= @habit.frequency %></p>
+<%= link_to "Edit", edit_habit_path(@habit) %> |
+<%= link_to "Back to list", habits_path %>

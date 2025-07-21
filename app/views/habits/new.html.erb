@@ -1,20 +1,31 @@
-<h1 class="text-xl font-semibold"><%= action_name.capitalize %> Habit</h1>
-
-<%= form_with(model: @habit, local: true) do |form| %>
-  <div class="mb-4">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: "input border p-2 w-full" %>
-  </div>
-
-  <div class="mb-4">
-    <%= form.label :description %>
-    <%= form.text_area :description, class: "input border p-2 w-full" %>
-  </div>
-
-  <div class="mb-4">
-    <%= form.label :frequency %>
-    <%= form.text_field :frequency, class: "input border p-2 w-full" %>
-  </div>
-
-<%= form.submit (@habit.new_record? ? "Create Habit" : "Update Habit"), class: "btn btn-primary bg-green-500 text-white px-4 py-2 rounded" %>
-<% end %>
+<div class="form-container w-full max-w-2xl mx-auto mt-16">
+  <div class="glass-effect rounded-3xl p-8">
+   <% if @habit.errors.any? %>
+      <div class="mb-6 p-4 bg-red-100 rounded">
+        <h2 class="font-semibold text-red-700">
+          <%= pluralize(@habit.errors.count, "error") %> prevented this habit from being saved:
+        </h2>
+        <ul class="list-disc list-inside text-red-600">
+          <% @habit.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <%= form_with(model: @habit, local: true) do |f| %>
+    <div class="mb-4">
+      <%= f.label :title, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :title, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200" %>
+    </div>
+    <div class="mb-4">
+      <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :description, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200" %>
+    </div>
+    <div class="mb-6">
+      <%= f.label :frequency, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :frequency, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200" %>
+    </div>
+     <%= f.submit @habit.persisted? ? "Update Habit" : "Create Habit",
+          class: "bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full" %>
+  <% end %>
+</div>

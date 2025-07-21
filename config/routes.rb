@@ -2,17 +2,18 @@ Rails.application.routes.draw do
   # Devise routes for user authentication
   devise_for :users
 
-  # Nested routes for habit check-ins
-  resources :habits do
-    resources :habit_checkins, only: [:create]
+  # Habits routes
+  resources :habits, except: [:show] do
+    # POST /habits/:habit_id/habit_checkins
+    post 'habit_checkins', to: 'habits#checkin_create', as: :checkins
   end
 
-  # Separate route to delete a check-in
-  resources :habit_checkins, only: [:destroy]
+  # DELETE /habit_checkins/:id
+  delete 'habit_checkins/:id', to: 'habits#checkin_destroy', as: :habit_checkin
 
-  # Root path goes to habit list
+  # Root path
   root "habits#index"
 
-  # Health check route (optional, for uptime monitoring)
+  # Optional: Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 end

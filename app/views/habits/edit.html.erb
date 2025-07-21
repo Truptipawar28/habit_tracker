@@ -1,11 +1,12 @@
-<h1 class="text-xl font-semibold"><%= action_name.capitalize %> Habit</h1>
 
-<%= form_with model: @habit do |f| %>
-  <div class="mt-4">
-    <%= f.label :name, class: "block" %>
-    <%= f.text_field :name, class: "border p-2 w-full" %>
+
+
+<div class="container mx-auto px-4">
+  <h1 class="text-2xl font-semibold text-center mb-6">Edit Habit</h1>
+
+  <%= render "form", habit: @habit %>
+
+  <div class="text-center mt-6">
+    <%= link_to "Back", habits_path, class: "inline-block text-blue-600 hover:text-blue-800 font-medium" %>
   </div>
-  <div class="mt-4">
-    <%= f.submit class: "bg-green-500 text-white px-4 py-2 rounded" %>
-  </div>
-<% end %>
+</div>
