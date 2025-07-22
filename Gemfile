@@ -57,7 +57,7 @@ gem "chartkick"
 gem "groupdate"
 gem 'sidekiq'
 gem 'redis'
-gem 'sidekiq-cron', '~> 1.4'
+gem 'sidekiq-cron', '~> 2.3'
 
 
 group :development, :test do
